@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }}'s Watchlist</title>
+</head>
+
+<body>
+    <h2>{{name}}'s Watchlist</h2>
+    <p> {{name}}'s Watchlist </p>
+
+    <p> {{ movies|length }} Title </p>
+
+    <ul>
+        {% for movie in movies %}
+        <li> {{movie.title}} - {{movie.year}} </li>
+        {% endfor %}
+    </ul>
+
+    <footer>&copy;2018 <a href="http://www.qq.com">hello, qq</a></footer>
+</body>
+
+</html>
