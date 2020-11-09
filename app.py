@@ -47,9 +47,8 @@ def initdb(drop):
 
 @app.route("/")
 def index():
-    user = User.query.first()
     movies = Movie.query.all()
-    return render_template("index.html", user=user, movies=movies)
+    return render_template("index.html", movies=movies)
 
 
 @app.route("/user/<name>")
@@ -95,3 +94,19 @@ def forge():
 
     db.session.commit()
     click.echo('Done.')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    """
+    传入要处理的错误代码
+    """
+    user = User.query.first()
+    return render_template('404.html'), 404
+
+@app.context_processor
+# 这个函数返回的变量（以字典键值对的形式）将会统一注入到每一个模板的上下文 环境中，因此可以直接在模板中使用。
+def inject_user():
+    # 函数名可以随意修改
+    user = User.query.first()
+    return dict(user = user)
+
