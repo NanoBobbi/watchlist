@@ -1,10 +1,11 @@
 {% extends 'base.html' %} {% block content %}
 <p> {{movies|length }} Titles</p>
 <!-- 添加电影记录模块 -->
+{% if current_user.is_authenticated %}
 <form method="post">
-    Name <input type="text" name="title" autocomplete="off" required> Year <input type="text" name="year" autocomplete="off" required>
-    <input type="submit" value="Add" name="submit" class="btn">
+    Name <input type="text" name="title" autocomplete="off" required> <input type="submit" value="Add" name="submit" class="btn">
 </form>
+{% endif %}
 <!-- 显示电影记录列表 模块 -->
 <ul class="movie-list">
     <!-- 循环输出电影记录 -->
@@ -12,13 +13,18 @@
     <li>
         {{ movie.title }} - {{ movie.year}}
         <span class="float-right">
-            <!-- 以下两个按钮都在循环中，所以可以获得movie.id -->
+            {% if current_user.is_authenticated %}
+            <!-- 以下两个按钮都在movie的遍历中，所以可以获得movie.id，在这个 if 语句中，判断当前用户登录状态，来是否显示这个两个按钮 -->
             <!-- 电影记录删除按钮 -->
             <form action=" {{ url_for('delete', movie_id=movie.id)}} " method="post" class="inline-form">
-                <input type="submit" name="delete" value="Delete" onclick=" return confirm('Are you sure ?')"class="btn">
+                <input type="submit" name="delete" value="Delete" onclick=" return confirm('Are you sure ?')"
+                    class="btn">
             </form>
             <!-- 电影记录编辑按钮 -->
             <a class="btn" href=" {{url_for('edit', movie_id=movie.id)}} ">Edit</a>
+            {% endif %}
+
+            <!-- IMDb -->
             <a class="imdb" href="https://www.imdb.com/find?q={{movie.title }}" target="_blank"
                 title="Find this movie on IMDb">IMDb</a>
         </span>

@@ -113,7 +113,7 @@ input[name=year] {
 }
 
 .alert {
-    position: absolute;
+    /* position: absolute; */
     padding: 7px;
     margin: 7px 0;
     border: 1px solid transparent;

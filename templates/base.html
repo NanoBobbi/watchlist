@@ -11,15 +11,27 @@
 </head>
 
 <body>
-    {% for message in get_flashed_messages() %}
-    <div class="alert"> {{message}} </div>
-    {% endfor %}
+
     <h2>
-        {{ user.name}}'s Watchlist
+        {{ user.username}}'s Watchlist
     </h2>
+    <span class="alert">
+        {% for message in get_flashed_messages() %} {{message}} {% endfor %}
+    </span>
+
     <nav>
         <ul>
-            <li><a href=" {{url_for('index')}} ">Home</a></li>
+            <li><a href=" {{url_for('index')}} ">Home</a> {% if current_user.is_authenticated %}
+                <li>
+                    <a href=" {{ url_for('settings') }} ">settings</a>
+                </li>
+                <li>
+                    <a href=" {{ url_for('logout')}} ">logout</a>
+                </li>
+                {% else %}
+                <li><a href=" {{ url_for('login') }} ">Login</a></li>
+                {% endif %}
+            </li>
         </ul>
     </nav>
     {% block content %}{% endblock %}
