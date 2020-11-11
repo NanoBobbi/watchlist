@@ -1,11 +1,10 @@
 from flask import Flask
+#从 app ：flask 包导入Flask类
 from flask import url_for, render_template, request,redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_manager, UserMixin, login_user, logout_user,login_required, current_user, LoginManager
-import os
-import sys
-import  click
+import os, sys, click
 
 
 WIN = sys.platform.startswith('win')
