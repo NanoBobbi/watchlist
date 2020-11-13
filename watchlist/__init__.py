@@ -4,10 +4,8 @@ import os
 import sys
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-import click
-click.disable_unicode_literals_warning = True
+from flask_sqlalchemy import SQLAlchemy
 
 # SQLite URI compatible
 WIN = sys.platform.startswith('win')

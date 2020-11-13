@@ -1,5 +1,3 @@
-# from urllib import request
-
 from flask import url_for, flash, render_template, request
 from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.utils import redirect
@@ -10,20 +8,27 @@ from watchlist.models import Movie, User
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    """
+    主页
+    """
+    # 如果用户添加了新的电影条目，即form的request请求变为了POST
     if request.method == "POST":
+        # 如果用户为登陆，则不能添加电影条目，重定向
         if not current_user.is_authenticated:
             return redirect(url_for("index"))
         title = request.form.get("title")
         year = request.form.get("year")
+        # 如果添加格式不对，重定向
         if not title or not year or len(year) > 4 or len(title) > 60:
             flash("Invalid input.")
             return redirect(url_for("index"))
+        # 向数据库添加电影条目
         movie = Movie(title=title, year=year)
         db.session.add(movie)
         db.session.commit()
         flash("Item created.")
         return redirect(url_for("index"))
-
+    # 查询当前登陆用户，和所有电影条目，将查询结果传给主页并显示出来
     user = User.query.first()
     movies = Movie.query.all()
     return render_template("index.html", user=user, movies=movies)
@@ -31,6 +36,9 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """
+    用户登陆
+    """
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -54,6 +62,9 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
+    """
+    用户登出
+    """
     logout_user()
     flash("Goodbye.")
     return redirect(url_for("index"))
@@ -62,6 +73,9 @@ def logout():
 @app.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
+    """
+    修改用户名
+    """
     if request.method == "POST":
         username = request.form["username"]
 
@@ -84,6 +98,9 @@ def settings():
 @app.route("/movie/edit/<int:movie_id>", methods=["GET", "POST"])
 @login_required
 def edit(movie_id):
+    """
+    编辑电影
+    """
     movie = Movie.query.get_or_404(movie_id)
 
     if request.method == "POST":
@@ -114,4 +131,3 @@ def delete(movie_id):
     db.session.commit()
     flash("Item deleted.")
     return redirect(url_for("index"))
-
